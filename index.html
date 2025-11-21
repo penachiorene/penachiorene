@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rene Penachio - Advocacia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&family=Quicksand:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --gold-primary: #d4af68;      
+            --gold-light: #f3e5c2;        
+            --text-main: #ffffff;
+            /* Cor dourada para o fundo com transparência simulada sobre preto */
+            --bg-gold-transparent: rgba(212, 175, 104, 0.5); 
+        }
+
+        body {
+            /* Fundo Dourado com 50% de transparência (blended com preto para contraste) */
+            background-color: #050505;
+            background-image: radial-gradient(circle at center, var(--bg-gold-transparent) 0%, #000000 100%);
+            
+            font-family: 'Quicksand', sans-serif;
+            color: var(--text-main);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .font-highlight {
+            font-family: 'Outfit', sans-serif;
+            letter-spacing: 0.05em;
+        }
+
+        /* Efeitos ambientais ajustados para o tema dourado */
+        body::before, body::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: -1;
+            opacity: 0.4;
+        }
+        body::before {
+            width: 300px;
+            height: 300px;
+            background: var(--gold-primary);
+            top: -50px;
+            left: -50px;
+        }
+        body::after {
+            width: 250px;
+            height: 250px;
+            background: #8c7335; /* Tom dourado mais escuro */
+            bottom: -50px;
+            right: -50px;
+        }
+
+        /* Card Principal mantido (Glass) */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        /* BOTÕES LIQUID GLASS 3D + NEON DOURADO
+           A borda agora é sólida e brilha (neon).
+        */
+        .btn-liquid-3d {
+            position: relative;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.01));
+            backdrop-filter: blur(10px);
+            
+            /* NEON BORDER: Borda fina dourada */
+            border: 1px solid var(--gold-primary);
+            
+            color: var(--gold-light);
+            font-family: 'Outfit', sans-serif;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            font-weight: 500;
+
+            /* COMBINAÇÃO: Sombra 3D Interna + Brilho Neon Externo */
+            box-shadow: 
+                /* Neon Glow Externo */
+                0 0 8px rgba(212, 175, 104, 0.6), 
+                /* Brilho 3D Interno (Topo/Esq) */
+                inset 1px 1px 2px rgba(255, 255, 255, 0.3), 
+                /* Sombra 3D Interna (Base/Dir) */
+                inset -1px -1px 2px rgba(0, 0, 0, 0.5),
+                /* Sombra Projetada no chão */
+                5px 5px 15px rgba(0, 0, 0, 0.3);
+            
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            overflow: hidden;
+        }
+        
+        .btn-liquid-3d::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transform: skewX(-25deg);
+            transition: 0.5s;
+        }
+
+        .btn-liquid-3d:hover {
+            transform: translateY(-3px) scale(1.01);
+            color: #fff;
+            background: rgba(212, 175, 104, 0.15); /* Leve tint dourado no hover */
+            
+            /* Intensifica o Neon no Hover */
+            box-shadow: 
+                0 0 15px var(--gold-primary), /* Neon mais forte */
+                inset 1px 1px 5px rgba(255, 255, 255, 0.5),
+                inset -1px -1px 5px rgba(0, 0, 0, 0.2),
+                8px 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .btn-liquid-3d:hover::before {
+            left: 150%;
+        }
+
+        /* O botão principal pode ter um neon levemente mais intenso */
+        .btn-liquid-primary {
+            box-shadow: 
+                0 0 12px rgba(212, 175, 104, 0.8), /* Neon mais forte por padrão */
+                inset 1px 1px 2px rgba(255, 255, 255, 0.4),
+                inset -1px -1px 2px rgba(0, 0, 0, 0.5),
+                5px 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Logo Box */
+        .logo-box {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.01));
+            border: 1px solid rgba(212, 175, 104, 0.5); /* Borda sutil dourada no logo também */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.2), 0 0 10px rgba(212, 175, 104, 0.2);
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+    </style>
+</head>
+<body class="flex items-center justify-center p-4">
+
+    <!-- Card Principal -->
+    <div class="w-full max-w-sm glass-card rounded-[30px] p-8 text-center fade-in-up relative">
+        
+        <!-- Logo -->
+        <div class="logo-box">
+            <i class="fas fa-scale-balanced text-3xl text-[#d4af68]"></i>
+        </div>
+
+        <!-- Cabeçalho -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-highlight font-bold text-[#f3e5c2] mb-1 uppercase">
+                Rene Penachio
+            </h1>
+            <p class="text-xs font-highlight uppercase tracking-[0.3em] text-[#d4af68] mb-4 opacity-90">
+                Xavier de Sá
+            </p>
+            
+            <div class="w-12 h-[1px] bg-[#d4af68]/40 mx-auto mb-4"></div>
+
+            <p class="text-sm font-light text-gray-200 leading-relaxed">
+                Advocacia & Assessoria Jurídica
+            </p>
+            <p class="text-[11px] font-bold tracking-wide text-[#d4af68] mt-2">
+                OAB/SP 441.420
+            </p>
+        </div>
+
+        <!-- Botões Liquid Glass 3D com Neon Dourado -->
+        <div class="space-y-4 fade-in-up delay-200">
+            
+            <a href="https://wa.me/5511989074419?text=Olá,%20Dr.%20Rene.%20Gostaria%20de%20agendar%20uma%20consulta." target="_blank" class="btn-liquid-3d btn-liquid-primary flex items-center justify-center py-4 px-6 rounded-2xl w-full text-decoration-none group">
+                <span class="mr-3 text-xl"><i class="fab fa-whatsapp"></i></span>
+                AGENDAR CONSULTA
+            </a>
+
+            <a href="https://www.google.com/maps/search/?api=1&query=Avenida+João+Firmino,+1413,+Assunção,+São+Bernardo+do+Campo" target="_blank" class="btn-liquid-3d flex items-center justify-center py-3.5 px-6 rounded-2xl w-full text-sm text-decoration-none">
+                <span class="mr-3 text-[#d4af68]"><i class="fas fa-map-pin"></i></span>
+                VER LOCALIZAÇÃO
+            </a>
+
+            <a href="https://instagram.com/penachioadvogados" target="_blank" class="btn-liquid-3d flex items-center justify-center py-3.5 px-6 rounded-2xl w-full text-sm text-decoration-none">
+                <span class="mr-3 text-[#d4af68]"><i class="fab fa-instagram"></i></span>
+                INSTAGRAM
+            </a>
+            
+             <a href="mailto:penachiorene@gmail.com" class="btn-liquid-3d flex items-center justify-center py-3.5 px-6 rounded-2xl w-full text-sm text-decoration-none">
+                <span class="mr-3 text-[#d4af68]"><i class="far fa-envelope"></i></span>
+                ENVIAR E-MAIL
+            </a>
+
+        </div>
+
+        <!-- Rodapé -->
+        <div class="mt-10 pt-4 border-t border-white/5 fade-in-up delay-300">
+            <button onclick="shareCard()" class="text-[#d4af68]/60 hover:text-[#f3e5c2] text-[11px] uppercase tracking-wider transition-colors flex items-center justify-center mx-auto gap-2 font-highlight">
+                <i class="fas fa-share-alt"></i> Compartilhar contato
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        async function shareCard() {
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: 'Rene Penachio - Advocacia',
+                        text: 'Advocacia e Assessoria Jurídica - Dr. Rene Penachio',
+                        url: window.location.href
+                    });
+                } catch (err) {
+                    console.log('Erro ao compartilhar', err);
+                }
+            } else {
+                navigator.clipboard.writeText(window.location.href);
+                alert('Link copiado!');
+            }
+        }
+    </script>
+</body>
+</html>
