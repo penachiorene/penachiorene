@@ -1,4 +1,11 @@
 <!DOCTYPE html>
+<!-- Chosen Palette: Verde Royal Profundo e Dourado -->
+<!-- Application Structure Plan: Cartão Digital Interativo (SPA). Botões padronizados com altura fixa (h-16) e tipografia uniforme. -->
+<!-- Visualization & Content Choices: 
+- Botões: Todos com classe h-16, text-sm, uppercase, tracking-wider para uniformidade total.
+- Ícone: Mantido efeito gold-icon-shine.
+- Fundo: Mantido universo animado.
+-->
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -13,20 +20,22 @@
             --gold-primary: #d4af68;      
             --gold-light: #f3e5c2;        
             --text-main: #ffffff;
-            /* Cor dourada para o fundo com transparência simulada sobre preto */
-            --bg-gold-transparent: rgba(212, 175, 104, 0.5); 
+            
+            /* Verde Royal Profundo */
+            --royal-green-top: #11382b; 
+            --royal-green-bottom: #040f0b; 
         }
 
         body {
-            /* Fundo Dourado com 50% de transparência (blended com preto para contraste) */
-            background-color: #050505;
-            background-image: radial-gradient(circle at center, var(--bg-gold-transparent) 0%, #000000 100%);
+            /* Gradiente Verde Royal Profundo */
+            background: linear-gradient(to bottom, var(--royal-green-top), var(--royal-green-bottom));
             
             font-family: 'Quicksand', sans-serif;
             color: var(--text-main);
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
+            overflow-y: auto;
         }
 
         .font-highlight {
@@ -34,65 +43,90 @@
             letter-spacing: 0.05em;
         }
 
-        /* Efeitos ambientais ajustados para o tema dourado */
+        /* --- ANIMAÇÃO DE ESTRELAS (UNIVERSO) --- */
+        #universe-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -2;
+            overflow: hidden;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0;
+            animation: twinkle ease-in-out infinite;
+            box-shadow: 0 0 4px rgba(255, 255, 255, 0.8);
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 0.8; transform: scale(1.2); }
+            100% { opacity: 0; transform: scale(0.5); }
+        }
+
+        /* Nebulosas sutis */
         body::before, body::after {
             content: '';
             position: absolute;
             border-radius: 50%;
-            filter: blur(80px);
+            filter: blur(100px);
             z-index: -1;
-            opacity: 0.4;
+            opacity: 0.3;
         }
         body::before {
-            width: 300px;
-            height: 300px;
+            width: 400px;
+            height: 400px;
             background: var(--gold-primary);
-            top: -50px;
+            top: -100px;
             left: -50px;
+            animation: float-nebula 20s infinite alternate ease-in-out;
         }
         body::after {
-            width: 250px;
-            height: 250px;
-            background: #8c7335; /* Tom dourado mais escuro */
+            width: 350px;
+            height: 350px;
+            background: #1a5c48;
             bottom: -50px;
             right: -50px;
+            animation: float-nebula 25s infinite alternate-reverse ease-in-out;
         }
 
-        /* Card Principal mantido (Glass) */
+        @keyframes float-nebula {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(30px, 30px); }
+        }
+
+        /* Card Principal (Glass) */
         .glass-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
         }
 
-        /* BOTÕES LIQUID GLASS 3D + NEON DOURADO
-           A borda agora é sólida e brilha (neon).
-        */
+        /* --- BOTÕES LIQUID GLASS 3D + NEON --- */
         .btn-liquid-3d {
             position: relative;
             background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.01));
             backdrop-filter: blur(10px);
-            
-            /* NEON BORDER: Borda fina dourada */
             border: 1px solid var(--gold-primary);
-            
             color: var(--gold-light);
             font-family: 'Outfit', sans-serif;
             letter-spacing: 0.05em;
             text-transform: uppercase;
-            font-weight: 500;
-
-            /* COMBINAÇÃO: Sombra 3D Interna + Brilho Neon Externo */
+            font-weight: 600; /* Peso um pouco maior para leitura clara */
+            
+            /* Sombra e Neon */
             box-shadow: 
-                /* Neon Glow Externo */
-                0 0 8px rgba(212, 175, 104, 0.6), 
-                /* Brilho 3D Interno (Topo/Esq) */
+                0 0 8px rgba(212, 175, 104, 0.5), 
                 inset 1px 1px 2px rgba(255, 255, 255, 0.3), 
-                /* Sombra 3D Interna (Base/Dir) */
                 inset -1px -1px 2px rgba(0, 0, 0, 0.5),
-                /* Sombra Projetada no chão */
                 5px 5px 15px rgba(0, 0, 0, 0.3);
             
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -114,11 +148,9 @@
         .btn-liquid-3d:hover {
             transform: translateY(-3px) scale(1.01);
             color: #fff;
-            background: rgba(212, 175, 104, 0.15); /* Leve tint dourado no hover */
-            
-            /* Intensifica o Neon no Hover */
+            background: rgba(212, 175, 104, 0.15); 
             box-shadow: 
-                0 0 15px var(--gold-primary), /* Neon mais forte */
+                0 0 15px var(--gold-primary), 
                 inset 1px 1px 5px rgba(255, 255, 255, 0.5),
                 inset -1px -1px 5px rgba(0, 0, 0, 0.2),
                 8px 8px 20px rgba(0, 0, 0, 0.4);
@@ -128,27 +160,43 @@
             left: 150%;
         }
 
-        /* O botão principal pode ter um neon levemente mais intenso */
-        .btn-liquid-primary {
-            box-shadow: 
-                0 0 12px rgba(212, 175, 104, 0.8), /* Neon mais forte por padrão */
-                inset 1px 1px 2px rgba(255, 255, 255, 0.4),
-                inset -1px -1px 2px rgba(0, 0, 0, 0.5),
-                5px 5px 15px rgba(0, 0, 0, 0.3);
+        /* --- EFEITO OURO RELUZENTE DINÂMICO --- */
+        @keyframes gold-shimmer {
+            0% { background-position: -100% 0; }
+            100% { background-position: 200% 0; }
         }
 
-        /* Logo Box */
+        .gold-icon-shine {
+            background: linear-gradient(
+                120deg, 
+                #aa771c 0%,      
+                #bf953f 25%,     
+                #fcf6ba 50%,     
+                #b38728 75%,     
+                #aa771c 100%     
+            );
+            background-size: 200% auto;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gold-shimmer 3.5s linear infinite;
+            filter: drop-shadow(0 0 8px rgba(212, 175, 104, 0.6));
+        }
+
         .logo-box {
-            width: 80px;
-            height: 80px;
-            border-radius: 20px;
-            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.01));
-            border: 1px solid rgba(212, 175, 104, 0.5); /* Borda sutil dourada no logo também */
+            width: 90px;
+            height: 90px;
+            border-radius: 24px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.01));
+            border: 1px solid rgba(212, 175, 104, 0.4);
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0 auto 1.5rem;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.2), 0 0 10px rgba(212, 175, 104, 0.2);
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.3), 0 0 15px rgba(212, 175, 104, 0.15);
+            position: relative; 
+            z-index: 10;
+            backdrop-filter: blur(5px);
         }
 
         .fade-in-up {
@@ -167,12 +215,15 @@
 </head>
 <body class="flex items-center justify-center p-4">
 
+    <!-- Container das Estrelas -->
+    <div id="universe-container"></div>
+
     <!-- Card Principal -->
-    <div class="w-full max-w-sm glass-card rounded-[30px] p-8 text-center fade-in-up relative">
+    <div class="w-full max-w-sm glass-card rounded-[30px] p-8 text-center fade-in-up relative z-10">
         
         <!-- Logo -->
         <div class="logo-box">
-            <i class="fas fa-scale-balanced text-3xl text-[#d4af68]"></i>
+            <i class="fas fa-scale-balanced text-4xl gold-icon-shine"></i>
         </div>
 
         <!-- Cabeçalho -->
@@ -189,31 +240,36 @@
             <p class="text-sm font-light text-gray-200 leading-relaxed">
                 Advocacia & Assessoria Jurídica
             </p>
-            <p class="text-[11px] font-bold tracking-wide text-[#d4af68] mt-2">
+            
+            <a href="https://cna.oab.org.br" target="_blank" class="inline-block text-[11px] font-bold tracking-wide text-[#d4af68] mt-2 hover:text-[#f3e5c2] hover:underline transition-colors cursor-pointer" title="Consultar no Cadastro Nacional de Advogados">
                 OAB/SP 441.420
-            </p>
+            </a>
         </div>
 
-        <!-- Botões Liquid Glass 3D com Neon Dourado -->
-        <div class="space-y-4 fade-in-up delay-200">
+        <!-- Botões Padronizados (Mesmo tamanho e estilo) -->
+        <div class="space-y-4 fade-in-up delay-200 w-full">
             
-            <a href="https://wa.me/5511989074419?text=Olá,%20Dr.%20Rene.%20Gostaria%20de%20agendar%20uma%20consulta." target="_blank" class="btn-liquid-3d btn-liquid-primary flex items-center justify-center py-4 px-6 rounded-2xl w-full text-decoration-none group">
-                <span class="mr-3 text-xl"><i class="fab fa-whatsapp"></i></span>
+            <!-- WhatsApp -->
+            <a href="https://wa.me/5511989074419?text=Olá,%20Dr.%20Rene.%20Gostaria%20de%20agendar%20uma%20consulta." target="_blank" class="btn-liquid-3d flex items-center justify-center h-16 w-full text-sm tracking-wider text-decoration-none group">
+                <span class="mr-3 text-lg"><i class="fab fa-whatsapp"></i></span>
                 AGENDAR CONSULTA
             </a>
 
-            <a href="https://www.google.com/maps/search/?api=1&query=Avenida+João+Firmino,+1413,+Assunção,+São+Bernardo+do+Campo" target="_blank" class="btn-liquid-3d flex items-center justify-center py-3.5 px-6 rounded-2xl w-full text-sm text-decoration-none">
-                <span class="mr-3 text-[#d4af68]"><i class="fas fa-map-pin"></i></span>
+            <!-- Localização -->
+            <a href="https://www.google.com/maps/search/?api=1&query=Avenida+João+Firmino,+1413,+Assunção,+São+Bernardo+do+Campo" target="_blank" class="btn-liquid-3d flex items-center justify-center h-16 w-full text-sm tracking-wider text-decoration-none">
+                <span class="mr-3 text-lg text-[#d4af68]"><i class="fas fa-map-pin"></i></span>
                 VER LOCALIZAÇÃO
             </a>
 
-            <a href="https://instagram.com/penachioadvogados" target="_blank" class="btn-liquid-3d flex items-center justify-center py-3.5 px-6 rounded-2xl w-full text-sm text-decoration-none">
-                <span class="mr-3 text-[#d4af68]"><i class="fab fa-instagram"></i></span>
+            <!-- Instagram -->
+            <a href="https://instagram.com/penachioadvogados" target="_blank" class="btn-liquid-3d flex items-center justify-center h-16 w-full text-sm tracking-wider text-decoration-none">
+                <span class="mr-3 text-lg text-[#d4af68]"><i class="fab fa-instagram"></i></span>
                 INSTAGRAM
             </a>
             
-             <a href="mailto:penachiorene@gmail.com" class="btn-liquid-3d flex items-center justify-center py-3.5 px-6 rounded-2xl w-full text-sm text-decoration-none">
-                <span class="mr-3 text-[#d4af68]"><i class="far fa-envelope"></i></span>
+             <!-- Email -->
+             <a href="mailto:penachiorene@gmail.com" class="btn-liquid-3d flex items-center justify-center h-16 w-full text-sm tracking-wider text-decoration-none">
+                <span class="mr-3 text-lg text-[#d4af68]"><i class="far fa-envelope"></i></span>
                 ENVIAR E-MAIL
             </a>
 
@@ -228,7 +284,28 @@
 
     </div>
 
+    <!-- Script JS -->
     <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const universe = document.getElementById('universe-container');
+            const starCount = 60; 
+
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                const size = Math.random() * 2 + 1 + 'px';
+                star.style.width = size;
+                star.style.height = size;
+                star.style.top = Math.random() * 100 + '%';
+                star.style.left = Math.random() * 100 + '%';
+                const duration = Math.random() * 3 + 2 + 's'; 
+                const delay = Math.random() * 5 + 's';
+                star.style.animationDuration = duration;
+                star.style.animationDelay = delay;
+                universe.appendChild(star);
+            }
+        });
+
         async function shareCard() {
             if (navigator.share) {
                 try {
