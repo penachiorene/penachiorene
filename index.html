@@ -1,21 +1,32 @@
 <!DOCTYPE html>
-<!-- Chosen Palette: Verde Royal Profundo e Dourado -->
-<!-- Application Structure Plan: Cartão Digital Interativo (SPA). Botões padronizados com altura fixa (h-16) e tipografia uniforme. -->
-<!-- Visualization & Content Choices: 
-- Botões: Todos com classe h-16, text-sm, uppercase, tracking-wider para uniformidade total.
-- Ícone: Mantido efeito gold-icon-shine.
-- Fundo: Mantido universo animado.
+<!-- 
+  Chosen Palette: Verde Royal Profundo e Dourado 
+  Compatibility: Otimizado para iOS (iPhone) e Android.
+  Fixes: 
+  - Adicionado -webkit-appearance: none para evitar estilização nativa do Safari.
+  - Adicionado -webkit-tap-highlight-color: transparent para remover flash cinza ao tocar.
+  - Adicionado -webkit-font-smoothing: antialiased para renderização de fonte nítida.
+  - OAB Link: https://cna.oab.org.br
 -->
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#11382b">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Rene Penachio - Advocacia</title>
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Ícones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Fontes -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&family=Quicksand:wght@300;400;600&display=swap" rel="stylesheet">
 
     <style>
+        /* Variáveis de Cor */
         :root {
             --gold-primary: #d4af68;      
             --gold-light: #f3e5c2;        
@@ -26,16 +37,43 @@
             --royal-green-bottom: #040f0b; 
         }
 
+        /* Reset Global para iOS */
+        * {
+            -webkit-tap-highlight-color: transparent; /* Remove quadrado cinza no toque */
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
-            /* Gradiente Verde Royal Profundo */
+            /* Fundo Verde Royal fixo para evitar problemas de scroll no iOS */
             background: linear-gradient(to bottom, var(--royal-green-top), var(--royal-green-bottom));
+            background-attachment: fixed; /* Tenta fixar, mas o div #bg-fix garante */
             
             font-family: 'Quicksand', sans-serif;
             color: var(--text-main);
-            min-height: 100vh;
-            position: relative;
+            
+            /* Renderização de fonte premium no iOS */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            
             overflow-x: hidden;
             overflow-y: auto;
+        }
+
+        /* Garante fundo total no iPhone mesmo com barra de endereços */
+        #bg-fix {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(to bottom, var(--royal-green-top), var(--royal-green-bottom));
+            z-index: -3;
         }
 
         .font-highlight {
@@ -78,6 +116,7 @@
             filter: blur(100px);
             z-index: -1;
             opacity: 0.3;
+            pointer-events: none;
         }
         body::before {
             width: 400px;
@@ -105,24 +144,33 @@
         .glass-card {
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px); /* Essencial para vidro no iOS */
             border: 1px solid rgba(255, 255, 255, 0.08);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
         }
 
-        /* --- BOTÕES LIQUID GLASS 3D + NEON --- */
+        /* --- BOTÕES LIQUID GLASS 3D + NEON (Fixado para iOS) --- */
         .btn-liquid-3d {
+            /* Resets de iOS */
+            -webkit-appearance: none;
+            appearance: none;
+            cursor: pointer;
+            
             position: relative;
+            /* Gradiente explícito para garantir cor correta no Safari */
             background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.01));
+            
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            
             border: 1px solid var(--gold-primary);
             color: var(--gold-light);
+            
             font-family: 'Outfit', sans-serif;
             letter-spacing: 0.05em;
             text-transform: uppercase;
-            font-weight: 600; /* Peso um pouco maior para leitura clara */
+            font-weight: 600;
             
-            /* Sombra e Neon */
             box-shadow: 
                 0 0 8px rgba(212, 175, 104, 0.5), 
                 inset 1px 1px 2px rgba(255, 255, 255, 0.3), 
@@ -131,8 +179,15 @@
             
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             overflow: hidden;
+            display: flex; /* Garante alinhamento */
         }
         
+        /* Força a cor do link no iOS para não ficar azul */
+        a.btn-liquid-3d, a.btn-liquid-3d:visited, a.btn-liquid-3d:active {
+            color: var(--gold-light);
+            text-decoration: none;
+        }
+
         .btn-liquid-3d::before {
             content: '';
             position: absolute;
@@ -143,19 +198,21 @@
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
             transform: skewX(-25deg);
             transition: 0.5s;
+            pointer-events: none;
         }
 
         .btn-liquid-3d:hover {
             transform: translateY(-3px) scale(1.01);
-            color: #fff;
-            background: rgba(212, 175, 104, 0.15); 
+            /* Importante para iOS: fundo sólido no hover */
+            background-color: rgba(212, 175, 104, 0.15); 
+            color: #ffffff !important; /* Força branco no hover */
             box-shadow: 
                 0 0 15px var(--gold-primary), 
                 inset 1px 1px 5px rgba(255, 255, 255, 0.5),
                 inset -1px -1px 5px rgba(0, 0, 0, 0.2),
                 8px 8px 20px rgba(0, 0, 0, 0.4);
         }
-
+        
         .btn-liquid-3d:hover::before {
             left: 150%;
         }
@@ -176,9 +233,12 @@
                 #aa771c 100%     
             );
             background-size: 200% auto;
+            /* Prefixos Webkit obrigatórios para iOS */
             background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            color: transparent; /* Fallback */
+            
             animation: gold-shimmer 3.5s linear infinite;
             filter: drop-shadow(0 0 8px rgba(212, 175, 104, 0.6));
         }
@@ -197,6 +257,7 @@
             position: relative; 
             z-index: 10;
             backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
         }
 
         .fade-in-up {
@@ -214,6 +275,9 @@
     </style>
 </head>
 <body class="flex items-center justify-center p-4">
+    
+    <!-- Fix de Fundo para iOS -->
+    <div id="bg-fix"></div>
 
     <!-- Container das Estrelas -->
     <div id="universe-container"></div>
@@ -246,29 +310,29 @@
             </a>
         </div>
 
-        <!-- Botões Padronizados (Mesmo tamanho e estilo) -->
+        <!-- Botões Padronizados (h-16 para altura igual) -->
         <div class="space-y-4 fade-in-up delay-200 w-full">
             
             <!-- WhatsApp -->
-            <a href="https://wa.me/5511989074419?text=Olá,%20Dr.%20Rene.%20Gostaria%20de%20agendar%20uma%20consulta." target="_blank" class="btn-liquid-3d flex items-center justify-center h-16 w-full text-sm tracking-wider text-decoration-none group">
+            <a href="https://wa.me/5511989074419?text=Olá,%20Dr.%20Rene.%20Gostaria%20de%20agendar%20uma%20consulta." target="_blank" class="btn-liquid-3d flex items-center justify-center h-16 w-full text-sm tracking-wider group">
                 <span class="mr-3 text-lg"><i class="fab fa-whatsapp"></i></span>
                 AGENDAR CONSULTA
             </a>
 
             <!-- Localização -->
-            <a href="https://www.google.com/maps/search/?api=1&query=Avenida+João+Firmino,+1413,+Assunção,+São+Bernardo+do+Campo" target="_blank" class="btn-liquid-3d flex items-center justify-center h-16 w-full text-sm tracking-wider text-decoration-none">
+            <a href="https://www.google.com/maps/search/?api=1&query=Avenida+João+Firmino,+1413,+Assunção,+São+Bernardo+do+Campo" target="_blank" class="btn-liquid-3d flex items-center justify-center h-16 w-full text-sm tracking-wider">
                 <span class="mr-3 text-lg text-[#d4af68]"><i class="fas fa-map-pin"></i></span>
                 VER LOCALIZAÇÃO
             </a>
 
             <!-- Instagram -->
-            <a href="https://instagram.com/penachioadvogados" target="_blank" class="btn-liquid-3d flex items-center justify-center h-16 w-full text-sm tracking-wider text-decoration-none">
+            <a href="https://instagram.com/penachioadvogados" target="_blank" class="btn-liquid-3d flex items-center justify-center h-16 w-full text-sm tracking-wider">
                 <span class="mr-3 text-lg text-[#d4af68]"><i class="fab fa-instagram"></i></span>
                 INSTAGRAM
             </a>
             
              <!-- Email -->
-             <a href="mailto:penachiorene@gmail.com" class="btn-liquid-3d flex items-center justify-center h-16 w-full text-sm tracking-wider text-decoration-none">
+             <a href="mailto:penachiorene@gmail.com" class="btn-liquid-3d flex items-center justify-center h-16 w-full text-sm tracking-wider">
                 <span class="mr-3 text-lg text-[#d4af68]"><i class="far fa-envelope"></i></span>
                 ENVIAR E-MAIL
             </a>
@@ -277,7 +341,7 @@
 
         <!-- Rodapé -->
         <div class="mt-10 pt-4 border-t border-white/5 fade-in-up delay-300">
-            <button onclick="shareCard()" class="text-[#d4af68]/60 hover:text-[#f3e5c2] text-[11px] uppercase tracking-wider transition-colors flex items-center justify-center mx-auto gap-2 font-highlight">
+            <button onclick="shareCard()" class="text-[#d4af68]/60 hover:text-[#f3e5c2] text-[11px] uppercase tracking-wider transition-colors flex items-center justify-center mx-auto gap-2 font-highlight" style="-webkit-appearance: none;">
                 <i class="fas fa-share-alt"></i> Compartilhar contato
             </button>
         </div>
@@ -325,3 +389,5 @@
     </script>
 </body>
 </html>
+
+
